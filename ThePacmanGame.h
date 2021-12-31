@@ -25,7 +25,7 @@ protected:
 
 //private:
 	// The game functions
-	void init();
+	virtual void init();
 	virtual void run(string name);
 	// Printing functions
 	void printMenu() const;
@@ -42,7 +42,7 @@ protected:
 	void printScreenChoice();
 	// Function to check what the player have chosen in the menu
 	void checkChoice();
-	void runByScreens();
+	virtual void runByScreens();
 	bool isBoardValid();
 	// Win or Lose functions
 	void win();
@@ -55,19 +55,21 @@ protected:
 	bool isBreadCrumb(Point pos);
 
 	// Function to check if a position is free for a fruit
-	bool isNotOccupied(Point pos);
+	//bool isNotOccupied(Point pos);
 	// Function to check whethear pacman and a ghost met
-	void pacmanVsGhosts(Pacman& p, Ghost* g[], string name);
+	virtual void pacmanVsGhosts(Pacman& p, Ghost* g[], string name);
 	void pacmanVsFruit(Pacman& p, Fruit& f);
 	void printMotivation();
 	void ghostsVsGhost(int i, Ghost* g[]);
 	// Functions to handle the ghosts and fruit moves
-	void ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghost* g[], Pacman& p);
-	void fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit& f, Pacman& p);
+	virtual void ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghost* g[], Pacman& p);
+	virtual void fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit& f, Pacman& p);
 	void handleFruitActivity(Fruit& f);
-	void handlePacmanMove(Pacman& p, char& key, int& dir, Point& next);
+	virtual void handlePacmanMove(Pacman& p, char& key, int& dir, Point& next);
+
+	void createNewfileNames(const string& name, string& stepsFileName, string& resultFileName);
 public:
-	void start();
+	virtual void start();
 };
 
 #endif

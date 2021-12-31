@@ -4,6 +4,7 @@ using namespace std;
 
 #include "ThePacmanGame.h"
 #include "ThePacmanGameSave.h"
+#include "ThePacmanGameLoad.h"
 #include "InputParser.h"
 //#include "Board.h"
 
@@ -37,6 +38,12 @@ int main(int argc, char** argv)
 		{
 			ThePacmanGameSave saveGame;
 			game = &saveGame;
+			game->start();
+		}
+		if (input.mode == LOAD)
+		{
+			ThePacmanGameLoad loadGame;
+			game = &loadGame;
 			game->start();
 		}
 	}

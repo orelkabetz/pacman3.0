@@ -9,9 +9,10 @@ public:
         for (int i = 1; i < argc; ++i)
             this->tokens.push_back(string(argv[i]));
     }
+
     void checkMode()
     {
-        if (cmdOptionExists("-save"))
+        if (cmdOptionExists("-save")) // maybe to add if it finds both silent+save+load
             mode = Mode::SAVE;
         else if (cmdOptionExists("-load"))
         {
@@ -23,7 +24,7 @@ public:
         else
         {
             cout << "No valid Mode enterd!";
-            return;
+            return; //add exceptions
         }
     }
  

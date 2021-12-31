@@ -690,3 +690,10 @@ void ThePacmanGame::handleFruitActivity(Fruit& f)
 		}
 	}
 }
+
+void ThePacmanGame::createNewfileNames(const string& name, string& stepsFileName, string& resultFileName)
+{
+	string delimiter = ".screen.txt";
+	stepsFileName = name.substr(0, name.find(delimiter)) + ".steps.txt";
+	resultFileName = name.substr(0, name.find(delimiter)) + ".result.txt";
+}

@@ -17,7 +17,7 @@ public:
 	Point getPos() const { return _pos; }
 	int getDirection() const { return _direction; }
 	// Set function to update data in existing ghost
-	Point setPos(int x, int y) { _pos.set(x, y); }
+	Point setPos(int x, int y) { _pos.set(x, y); return _pos; }
 	void setColor(Color c) { _color = c; }
 	void setFigure(const char c) { _figure = c; }
 	void setDirection(int dir) { _direction = dir; }

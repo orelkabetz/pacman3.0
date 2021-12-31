@@ -9,8 +9,8 @@ private:
 	// The game functions
 	//void init();
 	void run(string name) override;
-	void createNewfileNames(string name, string& stepsFileName, string& resultFileName);
 	char DirectionToChar(const int direction);
+	char yesOrNo(const bool argument);
 
 public:
 	//void start();

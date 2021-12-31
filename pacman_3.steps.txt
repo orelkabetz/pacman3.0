@@ -1,0 +1,46 @@
+1 S N N U D D U U 
+2 S N Y U D L U U 
+3 S N N U D L U U 
+4 S N Y U D U R U 
+5 S N N U D U R U 
+6 R N Y U D R L U 
+7 R N N U D R L U 
+8 R N Y U D R L U 
+9 R N N U D R L U 
+10 R N Y U D R L U 
+11 R N N U D R L U 
+12 R N Y L D R L U 
+13 R N N L D R L U 
+14 R N Y L D R L U 
+15 R N N L D R L U 
+16 D N Y L D R L U 
+17 D N N L D R L U 
+18 D N Y L D R L U 
+19 D N N L D R L U 
+20 D N Y L D R L U 
+21 D N N L D R L U 
+22 D N Y L D R L U 
+23 D N N L D R L U 
+24 S N Y D D R L U 
+25 L N N D D R L U 
+26 L N Y U D R L U 
+27 L N N U D R L U 
+28 L N Y R L R L U 
+29 L N N R L R L U 
+30 L N Y R L L R U 
+31 L N N R L L R U 
+32 L N Y R L L R U 
+33 L N N R L L R U 
+34 L N Y R L L R U 
+35 L N N R L L R U 
+36 U N Y R L L R U 
+37 U N N R L L R U 
+38 L N Y R L L R U 
+39 L N N R L L R U 
+40 L N Y R U L R U 
+41 L Y 50 6 N R U L R L 
+42 L Y 49 6 Y R U L R L 
+43 U Y 49 6 N R U L R L 
+44 U Y 48 6 Y R U L R L 
+45 L Y 48 6 N R U L R R 
+46 L Y 49 6 Y R U L R R 
