@@ -32,6 +32,8 @@ void Fruit::step(int& dir){
 		if (_pos.getX() > Board::maxX) { _pos.setX(Board::maxX - 1); dir = LEFT; }
 		break;
 	case STAY: // STAY
+		_pos.setX(_pos.getX());
+		_pos.setY(_pos.getY());
 		break;
 	}
 }

@@ -650,7 +650,7 @@ void ThePacmanGame::handlePacmanMove(Pacman& p, char& key, int& dir, Point& next
 	//check wall
 	next = nextPos(p.getPos(), p.getDirection());
 	if (b.getPoint(next) == '#')
-		p.setDirection(4);
+		p.setDirection(STAY);
 	else
 		p.move();
 

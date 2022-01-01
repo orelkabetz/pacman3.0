@@ -11,6 +11,7 @@ private:
 	void run(string name) override;
 //	void createNewfileNames(string name, string& stepsFileName, string& resultFileName);
 	int charToDirection(const char& tmp);
+	void directionToKey(char& key);
 
 public:
 	//void start();

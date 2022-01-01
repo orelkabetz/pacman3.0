@@ -71,6 +71,9 @@ void ThePacmanGameLoad::run(string name)
 
 		if (f.getVisible())
 		{
+			stepsFile >> tmp;
+			f.setFigure(tmp);
+
 			stepsFile >> x;
 			stepsFile >> y;
 			Point pos = f.setPos(x, y);
@@ -81,16 +84,18 @@ void ThePacmanGameLoad::run(string name)
 		for (int i = 0; i < Board::ghostCount; i++)
 		{
 			stepsFile >> key;
+			//directionToKey(key);
 			dir = charToDirection(key);
 			g[i]->setDirection(dir);
 		}
 		ghostsMove(wait, stop, isCrumb, g, p);
 
-
+		stepsFile >> key;
+		//directionToKey(key);
+		dir = charToDirection(key);
+		f.setDirection(dir);
 		if (f.getVisible())
 		{
-			stepsFile >> dir;
-			f.setDirection(dir);
 			fruitsMove(wait, stop, isCrumb, f, p);
 		}
 
@@ -112,7 +117,7 @@ void ThePacmanGameLoad::run(string name)
 		//}
 		Sleep(200);
 		timeInGame++;
-		stepsFile >> tmp;
+		//stepsFile >> tmp;
 	}
 	if (remainedCrumbs == 0)
 		//resultFile << "Pacman has finished the screen in iteration: " << timeInGame - 1 << endl;
@@ -210,9 +215,18 @@ void ThePacmanGameLoad::ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghost*
 void ThePacmanGameLoad::fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit& f, Pacman& p)
 {
 	Point next;
+
 	if ((!wait) && (!stop))
 	{
 		isCrumb = (isBreadCrumb(f.getPos()));
+		next = nextPos(f.getPos(), f.getDirection());
+
+		if (b.getPoint(next) == '#')
+		{
+			f.erase(isCrumb);
+			return;
+		}
+		//isCrumb = (isBreadCrumb(f.getPos()));
 		f.move(isCrumb);
 	}
 }
@@ -220,13 +234,14 @@ void ThePacmanGameLoad::fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit&
 void ThePacmanGameLoad::handlePacmanMove(Pacman& p, char& key, int& dir, Point& next)
 {
 	//Pacman move
+	directionToKey(key);
 	dir = p.changeDirection(key);
 	p.setDirection(dir);
 
 	//check wall
 	next = nextPos(p.getPos(), p.getDirection());
 	if (b.getPoint(next) == '#')
-		p.setDirection(4);
+		p.setDirection(STAY);
 	else
 		p.move();
 
@@ -237,5 +252,30 @@ void ThePacmanGameLoad::handlePacmanMove(Pacman& p, char& key, int& dir, Point& 
 		score++;
 		remainedCrumbs--;
 		printScore();
+	}
+	return;
+}
+
+void ThePacmanGameLoad::directionToKey(char& key)
+{
+	switch (key)
+	{
+	case 'U':
+		key = 'w';
+		break;
+	case 'D':
+		key = 'x';
+		break;
+	case 'L':
+		key = 'a';
+		break;
+	case 'R':
+		key = 'd';
+		break;
+	case 'S':
+		key = 's';
+		break;
+	default:
+		break;
 	}
 }

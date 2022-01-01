@@ -46,7 +46,7 @@ void ThePacmanGameSave::run(string name)
 
 	// Print board, score and lives
 	remainedCrumbs = b.print() - 1;
-	remainedCrumbs = 40;
+	//remainedCrumbs = 40;
 
 	gotoxy(41, 24);
 	printScore();
@@ -97,6 +97,7 @@ void ThePacmanGameSave::run(string name)
 		if (f.getVisible())
 		{
 			//stepsFile << "fruit position: (" << f.getPos().getX() << ", " << f.getPos().getY() << "), ";
+			stepsFile << f.getFigure() << " ";
 			stepsFile << f.getPos().getX() << " " << f.getPos().getY() << " ";
 		}
 
