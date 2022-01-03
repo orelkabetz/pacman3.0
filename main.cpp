@@ -5,6 +5,7 @@ using namespace std;
 #include "ThePacmanGame.h"
 #include "ThePacmanGameSave.h"
 #include "ThePacmanGameLoad.h"
+#include "ThePacmanGameSilent.h"
 #include "InputParser.h"
 //#include "Board.h"
 
@@ -44,6 +45,12 @@ int main(int argc, char** argv)
 		{
 			ThePacmanGameLoad loadGame;
 			game = &loadGame;
+			game->start();
+		}
+		if (input.mode == SILENT)
+		{
+			ThePacmanGameSilent silentGame;
+			game = &silentGame;
 			game->start();
 		}
 	}

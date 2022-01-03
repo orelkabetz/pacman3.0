@@ -153,6 +153,7 @@
     <ClCompile Include="ThePacmanGame.cpp" />
     <ClCompile Include="ThePacmanGameLoad.cpp" />
     <ClCompile Include="ThePacmanGameSave.cpp" />
+    <ClCompile Include="ThePacmanGameSilent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Creature.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="ThePacmanGame.h" />
     <ClInclude Include="ThePacmanGameLoad.h" />
     <ClInclude Include="ThePacmanGameSave.h" />
+    <ClInclude Include="ThePacmanGameSilent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

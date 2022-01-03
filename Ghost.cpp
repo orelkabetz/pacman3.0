@@ -121,11 +121,11 @@ bool Ghost::isValid(const int& dir, const Board & b)const
 		return true;
 }
 
-void Ghost::simpleMove(const bool& isCrumb, const Point& pacmanPos, const Board& b)
+void Ghost::simpleMove(const bool& isCrumb, const Point& pos, const Board& b)
 {
 	// The function erase the ghost from the cuurent position, 
 	// change it's position to a random direction and draw it again there.
-	Point next = calculateNext(pacmanPos);
+	Point next = calculateNext(pos);
 	if (b.mati[next.getY()][next.getX()] == '#')
 		return;
 
@@ -134,3 +134,5 @@ void Ghost::simpleMove(const bool& isCrumb, const Point& pacmanPos, const Board&
 	setTextColor(_color);
 	_pos.draw(_figure);
 }
+
+

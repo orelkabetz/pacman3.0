@@ -54,11 +54,12 @@ int Board::print()
 	return count;
 }
 
-void Board::readScreens(string name)
+int Board::readScreens(string name)
 {	
 	char temp;
 	string Line;
 	int i = 0, j = 0;
+	int countCrumbs = 0;
 	bool infoFound = false;
 	ifstream Map(name);
 	getBoardSize(name, Map);
@@ -79,7 +80,10 @@ void Board::readScreens(string name)
 				if ((temp=='#') || (temp=='%') || (temp == '$'))
 					mati[i][j] = temp;
 				else if (temp == ' ')
+				{
 					mati[i][j] = '.';
+					countCrumbs++;
+				}
 				if ((temp == '&') || (temp == '@'))
 					mati[i][j] = ' ';
 			}
@@ -95,7 +99,7 @@ void Board::readScreens(string name)
 		Sleep(500);
 	}
 	
-	return;
+	return countCrumbs;
 }
 
 void Board::getBoardSize(string name, ifstream &Map)

@@ -1,16 +1,16 @@
 ﻿#include "ThePacmanGame.h"
-#include "ThePacmanGameLoad.h"
+#include "ThePacmanGameSilent.h"
 #include "io_utils.h"
 
-void ThePacmanGameLoad::start() //changed
+void ThePacmanGameSilent::start() //changed
 {
-	do{
+	do {
 		Board::colored = true;
 		runByScreens();
 	} while (wannaPlay);
 }
 
-void ThePacmanGameLoad::init() //changed
+void ThePacmanGameSilent::init() //changed
 {
 	lives = 3;
 	score = 0;
@@ -20,7 +20,7 @@ void ThePacmanGameLoad::init() //changed
 	return;
 }
 
-void ThePacmanGameLoad::run(string name)
+void ThePacmanGameSilent::run(string name)
 {
 	//clear_screen();
 	//cout << "this is Save Mode";
@@ -49,19 +49,19 @@ void ThePacmanGameLoad::run(string name)
 	Point next;
 
 	// Print board, score and lives
-	remainedCrumbs = b.print() - 1;
+	//remainedCrumbs = b.print() - 1;
 	//remainedCrumbs = 100;
 
-	gotoxy(41, 24);
-	printScore();
-	printLives();
+	//gotoxy(41, 24);
+	//printScore();
+	//printLives();
 
 	if (Board::colored) { setColors(p, g, f); }
 	while (!stepsFile.eof())
 	{
 		stepsFile >> timeInFile;
 		gotoxy(60, 1);
-		cout << timeInGame; //possible to delete only for debug
+		//cout << timeInGame; //possible to delete only for debug
 
 		stepsFile >> key;
 		handlePacmanMove(p, key, dir, next);
@@ -116,7 +116,7 @@ void ThePacmanGameLoad::run(string name)
 			p.setDirection(STAY);
 			for (int i = 0; i < Board::ghostCount; i++)
 			{
-				g[i]->erase(isCrumb);
+				//g[i]->erase(isCrumb);
 				g[i]->setPos(Board::GhostsPos[i]);
 				if (i % 2 == 0)
 					g[i]->setDirection(UP);
@@ -124,7 +124,7 @@ void ThePacmanGameLoad::run(string name)
 					g[i]->setDirection(DOWN);
 			}
 		}
-		Sleep(50);
+		//Sleep(200);
 		timeInGame++;
 		//stepsFile >> tmp;
 	}
@@ -132,7 +132,7 @@ void ThePacmanGameLoad::run(string name)
 	{
 		//resultFile << "Pacman has finished the screen in iteration: " << timeInGame - 1 << endl;
 		resultFile >> timeInFile;
-		if (timeInFile != (timeInGame-1))
+		if (timeInFile != (timeInGame - 1))
 			test = false;
 	}
 
@@ -149,10 +149,11 @@ void ThePacmanGameLoad::run(string name)
 		setTextColor(Color::RED);
 		cout << "The Test has not passed successfully";
 	}
-	Sleep(2000);
+	//Sleep(2000);
+	exit(0);
 }
 
-int ThePacmanGameLoad::charToDirection(const char& tmp)
+int ThePacmanGameSilent::charToDirection(const char& tmp)
 {
 	switch (tmp)
 	{
@@ -171,7 +172,7 @@ int ThePacmanGameLoad::charToDirection(const char& tmp)
 	}
 }
 
-bool ThePacmanGameLoad::charToBool(const char& tmp)
+bool ThePacmanGameSilent::charToBool(const char& tmp)
 {
 	if (tmp == 'Y')
 		return true;
@@ -179,13 +180,13 @@ bool ThePacmanGameLoad::charToBool(const char& tmp)
 		return false;
 }
 
-void ThePacmanGameLoad::runByScreens()
+void ThePacmanGameSilent::runByScreens()
 {
 	init();
 	for (int i = 0; i < Board::fileNamesList.size(); i++)
 	{
-		printLevel(i);
-		b.readScreens(Board::fileNamesList[i]);
+		//printLevel(i);
+		remainedCrumbs = b.readScreens(Board::fileNamesList[i]);
 		if (!isBoardValid())
 		{
 			wannaPlay = false;
@@ -203,7 +204,7 @@ void ThePacmanGameLoad::runByScreens()
 }
 
 
-void ThePacmanGameLoad::pacmanVsGhosts(Pacman& p, Ghost* g[], string name)
+void ThePacmanGameSilent::pacmanVsGhosts(Pacman& p, Ghost* g[], string name)
 {
 	for (int i = 0; i < 4; i++)
 	{
@@ -211,8 +212,8 @@ void ThePacmanGameLoad::pacmanVsGhosts(Pacman& p, Ghost* g[], string name)
 		{
 			pacmanDied = true;
 			ThePacmanGame::lives--;
-			if (lives)
-				p.loseLife(Board::colored);
+			//if (lives)
+			//	p.loseLife(Board::colored);
 
 			Sleep(200);
 			//run(name); // öøéê ìùðåú ìreturn
@@ -221,7 +222,7 @@ void ThePacmanGameLoad::pacmanVsGhosts(Pacman& p, Ghost* g[], string name)
 	}
 }
 
-void ThePacmanGameLoad::ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghost* g[], Pacman& p)
+void ThePacmanGameSilent::ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghost* g[], Pacman& p)
 {
 	Point next;
 	if ((!wait) && (!stop))
@@ -229,7 +230,8 @@ void ThePacmanGameLoad::ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghost*
 		for (int i = 0; i < Board::ghostCount; i++)
 		{
 			isCrumb = (isBreadCrumb(g[i]->getPos()));
-			g[i]->simpleMove(isCrumb, g[i]->getPos(), b);
+			//g[i]->simpleMove(isCrumb, p.getPos(), b);
+			g[i]->step();
 			ghostsVsGhost(i, g);
 		}
 		wait = true;
@@ -238,26 +240,26 @@ void ThePacmanGameLoad::ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghost*
 		wait = false;
 }
 
-void ThePacmanGameLoad::fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit& f, Pacman& p)
+void ThePacmanGameSilent::fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit& f, Pacman& p)
 {
-	Point next;
+	//Point next;
 
-	if ((!wait) && (!stop))
-	{
-		isCrumb = (isBreadCrumb(f.getPos()));
-		next = nextPos(f.getPos(), f.getDirection());
+	//if ((!wait) && (!stop))
+	//{
+	//	isCrumb = (isBreadCrumb(f.getPos()));
+	//	next = nextPos(f.getPos(), f.getDirection());
 
-		if (b.getPoint(next) == '#')
-		{
-			f.erase(isCrumb);
-			return;
-		}
-		//isCrumb = (isBreadCrumb(f.getPos()));
-		f.move(isCrumb);
-	}
+	//	if (b.getPoint(next) == '#')
+	//	{
+	//		//f.erase(isCrumb);
+	//		return;
+	//	}
+	//	//isCrumb = (isBreadCrumb(f.getPos()));
+	//	f.move(isCrumb);
+	//}
 }
 
-void ThePacmanGameLoad::handlePacmanMove(Pacman& p, char& key, int& dir, Point& next)
+void ThePacmanGameSilent::handlePacmanMove(Pacman& p, char& key, int& dir, Point& next)
 {
 	//Pacman move
 	directionToKey(key);
@@ -269,20 +271,20 @@ void ThePacmanGameLoad::handlePacmanMove(Pacman& p, char& key, int& dir, Point& 
 	if (b.getPoint(next) == '#')
 		p.setDirection(STAY);
 	else
-		p.move();
+		p.step();
 
 	//check crumb for pacman
-	if (b.getPoint(p.getPos()) == '.')
-	{
-		b.setPoint(p.getPos(), '%');
-		score++;
-		remainedCrumbs--;
-		printScore();
-	}
+	//if (b.getPoint(p.getPos()) == '.')
+	//{
+	//	b.setPoint(p.getPos(), '%');
+	//	score++;
+	//	remainedCrumbs--;
+	//	printScore();
+	//}
 	return;
 }
 
-void ThePacmanGameLoad::directionToKey(char& key)
+void ThePacmanGameSilent::directionToKey(char& key)
 {
 	switch (key)
 	{

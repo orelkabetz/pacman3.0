@@ -55,7 +55,7 @@ public:
 	// Set function to update a char in a given point
 	void setPoint(const Point& pos, char updateChar) { mati[pos.getY()][pos.getX()] = updateChar; }
 
-	void readScreens(string name);
+	int readScreens(string name);
 	void getBoardSize(string name, ifstream& Map);
 	void getLocations(ifstream& Map);
 	void createFileList(vector<string> &fileNamesList);

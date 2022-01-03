@@ -15,6 +15,7 @@ public:
 
 	// Function to move pacman
 	void move(bool isCrumb=true);
+	void step();
 	void loseLife(bool colored);
 	// Function to change the direction according to player choice
 	int changeDirection(char key);

@@ -40,9 +40,9 @@ void ThePacmanGame::run(string name)
 	int dir = 0;
 	bool wait = true, isCrumb = false, stop = false, died = false;
 
-	GhostBest gb0(UP ,Board::GhostsPos[0]), gb1(DOWN, Board::GhostsPos[1]), gb2(DOWN, Board::GhostsPos[2]), gb3(UP, Board::GhostsPos[3]);
-	GhostGood gg0(UP, Board::GhostsPos[0]), gg1(DOWN, Board::GhostsPos[1]), gg2(DOWN, Board::GhostsPos[2]), gg3(UP, Board::GhostsPos[3]);
-	GhostNovice gn0(UP, Board::GhostsPos[0]), gn1(DOWN, Board::GhostsPos[1]), gn2(DOWN, Board::GhostsPos[2]), gn3(UP, Board::GhostsPos[3]);
+	GhostBest gb0(UP ,Board::GhostsPos[0]), gb1(DOWN, Board::GhostsPos[1]), gb2(UP, Board::GhostsPos[2]), gb3(DOWN, Board::GhostsPos[3]);
+	GhostGood gg0(UP, Board::GhostsPos[0]), gg1(DOWN, Board::GhostsPos[1]), gg2(UP, Board::GhostsPos[2]), gg3(DOWN, Board::GhostsPos[3]);
+	GhostNovice gn0(UP, Board::GhostsPos[0]), gn1(DOWN, Board::GhostsPos[1]), gn2(UP, Board::GhostsPos[2]), gn3(DOWN, Board::GhostsPos[3]);
 
 	Ghost* g[4];
 
@@ -115,6 +115,22 @@ void ThePacmanGame::run(string name)
 		pacmanVsFruit(p, f);
 		//check Ghost VS Pacman
 		pacmanVsGhosts(p, g, name);
+		if (pacmanDied)
+		{
+			// initializing positions
+			pacmanDied = false;
+			p.setPos(Board::PacmanPos);
+			p.setDirection(STAY);
+			for (int i = 0; i < Board::ghostCount; i++)
+			{
+				g[i]->erase(isCrumb);
+				g[i]->setPos(Board::GhostsPos[i]);
+				if (i%2==0)
+					g[i]->setDirection(UP);
+				else
+					g[i]->setDirection(DOWN);
+			}
+		}
 		Sleep(200);
 	}
 }
@@ -399,6 +415,7 @@ void ThePacmanGame::runByScreens()
 	init();
 	if (screens == MULTIPLE)
 	{
+		Board::fileNamesList.front();
 		for (int i = 0; i < Board::fileNamesList.size(); i++)
 		{
 			printLevel(i);
@@ -411,7 +428,7 @@ void ThePacmanGame::runByScreens()
 			run(Board::fileNamesList[i]);
 			if (!lives)
 				gameOver();
-			Board::pacmanCount = 0; Board::ghostCount = 0;
+			//Board::pacmanCount = 0; Board::ghostCount = 0;
 		}
 	}
 	else if (screens == SINGLE)
@@ -456,6 +473,7 @@ bool ThePacmanGame::isBoardValid()
 
 void ThePacmanGame::win()
 {
+	Sleep(2000);
 	clear_screen();
 	Sleep(200);
 	if (Board::colored) { setTextColor(Color::GREEN); }
@@ -493,7 +511,7 @@ void ThePacmanGame::gameOver()
 	gotoxy(1, 24);
 	clear_screen();
 	
-	lives = 3;
+	//lives = 3;
 	printMenu();
 	checkChoice();
 }

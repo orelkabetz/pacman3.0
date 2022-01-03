@@ -21,9 +21,9 @@ void ThePacmanGameSave::run(string name)
 	int timeInGame = 1;
 	bool wait = true, isCrumb = false, stop = false;
 
-	GhostBest gb0(UP, Board::GhostsPos[0]), gb1(DOWN, Board::GhostsPos[1]), gb2(DOWN, Board::GhostsPos[2]), gb3(UP, Board::GhostsPos[3]);
-	GhostGood gg0(UP, Board::GhostsPos[0]), gg1(DOWN, Board::GhostsPos[1]), gg2(DOWN, Board::GhostsPos[2]), gg3(UP, Board::GhostsPos[3]);
-	GhostNovice gn0(UP, Board::GhostsPos[0]), gn1(DOWN, Board::GhostsPos[1]), gn2(DOWN, Board::GhostsPos[2]), gn3(UP, Board::GhostsPos[3]);
+	GhostBest gb0(UP, Board::GhostsPos[0]), gb1(DOWN, Board::GhostsPos[1]), gb2(UP, Board::GhostsPos[2]), gb3(DOWN, Board::GhostsPos[3]);
+	GhostGood gg0(UP, Board::GhostsPos[0]), gg1(DOWN, Board::GhostsPos[1]), gg2(UP, Board::GhostsPos[2]), gg3(DOWN, Board::GhostsPos[3]);
+	GhostNovice gn0(UP, Board::GhostsPos[0]), gn1(DOWN, Board::GhostsPos[1]), gn2(UP, Board::GhostsPos[2]), gn3(DOWN, Board::GhostsPos[3]);
 
 	Ghost* g[4];
 
@@ -46,7 +46,7 @@ void ThePacmanGameSave::run(string name)
 
 	// Print board, score and lives
 	remainedCrumbs = b.print() - 1;
-	//remainedCrumbs = 40;
+	//remainedCrumbs = 100;
 
 	gotoxy(41, 24);
 	printScore();
@@ -97,14 +97,14 @@ void ThePacmanGameSave::run(string name)
 		if (f.getVisible())
 		{
 			//stepsFile << "fruit position: (" << f.getPos().getX() << ", " << f.getPos().getY() << "), ";
-			stepsFile << f.getFigure() << " ";
+			//stepsFile << f.getFigure() << " ";
 			stepsFile << f.getPos().getX() << " " << f.getPos().getY() << " ";
 		}
 
 		//Ghost Move
+		stepsFile << yesOrNo(wait) << " ";
 		ghostsMove(wait, stop, isCrumb, g, p);
 		//stepsFile << "ghosts + fruit move: " << yesOrNo(wait) << ", ";
-		stepsFile << yesOrNo(wait) << " ";
 
 		for (int i = 0; i < Board::ghostCount; i++)
 		{
@@ -116,7 +116,7 @@ void ThePacmanGameSave::run(string name)
 			fruitsMove(wait, stop, isCrumb, f, p);
 		//stepsFile << "fruit: " << DirectionToChar(f.getDirection()) << "." << endl;
 		//stepsFile << DirectionToChar(f.getDirection()) << " " << endl;
-		stepsFile << DirectionToChar(f.getDirection()) << " ";
+		stepsFile << DirectionToChar(f.getDirection()) << endl;
 
 		//check Fruit VS Pacman
 		pacmanVsFruit(p, f);
@@ -124,21 +124,31 @@ void ThePacmanGameSave::run(string name)
 		pacmanVsGhosts(p, g ,name);
 		if (pacmanDied)
 		{
-			resultFile << "Pacman has lost life in iteration: " << timeInGame << endl;
+			//resultFile << "Pacman has lost life in iteration: " << timeInGame << endl;
+			resultFile << timeInGame << " ";
+			
 			// initializing positions
 			pacmanDied = false;
 			p.setPos(Board::PacmanPos);
+			p.setDirection(STAY);
 			for (int i = 0; i < Board::ghostCount; i++)
 			{
 				g[i]->erase(isCrumb);
 				g[i]->setPos(Board::GhostsPos[i]);
+				if (i % 2 == 0)
+					g[i]->setDirection(UP);
+				else
+					g[i]->setDirection(DOWN);
 			}
 		}
 		Sleep(200);
 		timeInGame++;
 	}
-	if(remainedCrumbs==0)
-		resultFile << "Pacman has finished the screen in iteration: " << timeInGame-1 << endl;
+	if (remainedCrumbs == 0)
+	{
+		//resultFile << "Pacman has finished the screen in iteration: " << timeInGame - 1 << endl;
+		resultFile << timeInGame - 1 << " ";
+	}
 
 	stepsFile.close();
 	resultFile.close();
