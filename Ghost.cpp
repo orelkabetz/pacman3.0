@@ -2,9 +2,6 @@
 #include "Board.h"
 #include "ThePacmanGame.h"
 
-//void Ghost::move(bool isCrumb, const Point& pacmanPos, const Board& b)
-//{
-//}
 
 void Ghost::erase(const bool& isCrumb)const
 {

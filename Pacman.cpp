@@ -8,7 +8,6 @@ void Pacman::move(bool isCrumb)
 	// The function erase pacman from the cuurent position, 
 	// change it's position to the chosen direction and draw it again there.
 	_pos.draw(' ');
-//	_pos.movePacman(_direction);
 	step();
 	setTextColor(_color);
 	_pos.draw(_figure);
@@ -16,7 +15,6 @@ void Pacman::move(bool isCrumb)
 
 void Pacman::step() {
 	// Checking cases according to the direction
-	// this is Or
 	switch (_direction) {
 	case UP: // UP
 		_pos.setY(_pos.getY() - 1);

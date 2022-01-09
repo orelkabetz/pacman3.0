@@ -24,22 +24,18 @@ int Board::print()
 	// A loop function that prints the matrix of the board
 	for (int y = 0; y < maxY; y++) {
 		for (int x = 0; x < maxX; x++) {
-			//switch (mat[y][x])
 			switch (mati[y][x])
 			{
 			case WALL:
 				if (Board::colored) { setTextColor(Color::LIGHTBLUE); }
 				cout << '#';
-				//cout << mat[y][x];
 				break;
 			case SPACE:
-			case '$':
+			case GHOST:
 				cout << ' ';
 				break;
 			case BREAD:
-			case ' ':
 				if (Board::colored) {setTextColor(Color::BROWN);}
-				//cout << mat[y][x];
 				cout << '.';
 				count++;
 				break;
@@ -47,7 +43,6 @@ int Board::print()
 				cout << mati[y][x];
 				break;
 			}
-			//cout << mat[y][x];
 		}
 		cout << std::endl;
 	}

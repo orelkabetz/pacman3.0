@@ -6,6 +6,7 @@
 //ThePacmanGameLoad
 class ThePacmanGameSilent : public ThePacmanGameLoad {
 private:
+	bool finalTest = true;
 	// The game functions
 	//void init();
 	void run(string name) override;
@@ -20,6 +21,7 @@ public:
 	bool charToBool(const char& tmp);
 	void runByScreens() override;
 	void pacmanVsGhosts(Pacman& p, Ghost* g[], string name) override;
+	void pacmanVsFruit(Pacman& p, Fruit& f) override;
 	void ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghost* g[], Pacman& p) override;
 	void fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit& f, Pacman& p) override;
 	void handlePacmanMove(Pacman& p, char& key, int& dir, Point& next) override;

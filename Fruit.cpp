@@ -7,29 +7,29 @@ void Fruit::move(bool isCrumb)
 	// The function erase the ghost from the cuurent position, 
 	// change it's position to a random direction and draw it again there.
 	erase(isCrumb);
-	step(_direction);
+	step();
 	setTextColor(_color);
 	_pos.draw(_figure);
 }
 
-void Fruit::step(int& dir){
+void Fruit::step(){
 	// Checking cases according to the direction
-	switch (dir) {
+	switch (_direction) {
 	case UP: // UP
 		_pos.setY(_pos.getY() - 1);
-		if (_pos.getY() < 0) { _pos.setY(1); dir = DOWN; }
+		if (_pos.getY() < 0) { _pos.setY(1); _direction = DOWN; }
 		break;
 	case DOWN: // DOWN
 		_pos.setY(_pos.getY() + 1);
-		if (_pos.getY() > Board::maxY - 1) { _pos.setY(Board::maxY - 2); dir = UP; }
+		if (_pos.getY() > Board::maxY - 1) { _pos.setY(Board::maxY - 2); _direction = UP; }
 		break;
 	case LEFT: // LEFT
 		_pos.setX(_pos.getX() - 1);
-		if (_pos.getX() < 1) { _pos.setX(2); dir = RIGHT; }
+		if (_pos.getX() < 1) { _pos.setX(2); _direction = RIGHT; }
 		break;
 	case RIGHT: // RIGHT
 		_pos.setX(_pos.getX() + 1);
-		if (_pos.getX() > Board::maxX) { _pos.setX(Board::maxX - 1); dir = LEFT; }
+		if (_pos.getX() > Board::maxX) { _pos.setX(Board::maxX - 1); _direction = LEFT; }
 		break;
 	case STAY: // STAY
 		_pos.setX(_pos.getX());

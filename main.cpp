@@ -7,20 +7,10 @@ using namespace std;
 #include "ThePacmanGameLoad.h"
 #include "ThePacmanGameSilent.h"
 #include "InputParser.h"
-//#include "Board.h"
+#include "InvalidGameModeException.h"
 
-//void test()
-//{
-//	Board b;
-//	char* namesList[10][25];
-//	//b.createFileList();
-//	//b.readScreens("pacman_1.screen.txt");
-//	//b.readScreens("pacman_2.screen.txt");
-//	//b.readScreens("pacman_3.screen.txt");
-//}
 
-int main(int argc, char** argv)
-//int main()
+void main(int argc, char** argv) 
 {
 	srand(time(NULL));
 	ThePacmanGame* game;
@@ -30,11 +20,16 @@ int main(int argc, char** argv)
 		game->start();
 	}
 	else {
+		
 		InputParser input(argc, argv);
-		//input.printFirstToken();
-		input.checkMode();
-		//if(input.mode!=NULL)
-		//	cout << input.mode; 
+		
+		try {input.checkMode();}
+		catch (InvalidGameModeException& i)
+		{
+			cout << i.what() << endl;
+			cout << "Usage: " << argv[0] << "[-save] [-load | -load -silent]" << endl;
+			
+		}
 		if (input.mode == SAVE)
 		{
 			ThePacmanGameSave saveGame;
@@ -54,6 +49,7 @@ int main(int argc, char** argv)
 			game->start();
 		}
 	}
-
-	return 0;
 }
+		
+
+

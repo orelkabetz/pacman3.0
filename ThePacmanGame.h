@@ -9,6 +9,7 @@
 #include "Pacman.h"
 #include "Fruit.h"
 #include "Board.h"
+#include "NoBoardsException.h"
 
 class ThePacmanGame {
 protected:
@@ -22,7 +23,6 @@ protected:
 	int screens;
 	bool wannaPlay = true;
 	bool pacmanDied = false;
-
 //private:
 	// The game functions
 	virtual void init();
@@ -36,7 +36,6 @@ protected:
 	void printPause() const;
 	void printContinue() const;
 	void printGoodBye();
-	void printNoBoards() const;
 	void printLevel(int i) const;
 	void printGhostLevel();
 	void printScreenChoice();
@@ -58,7 +57,7 @@ protected:
 	//bool isNotOccupied(Point pos);
 	// Function to check whethear pacman and a ghost met
 	virtual void pacmanVsGhosts(Pacman& p, Ghost* g[], string name);
-	void pacmanVsFruit(Pacman& p, Fruit& f);
+	virtual void pacmanVsFruit(Pacman& p, Fruit& f);
 	void printMotivation();
 	void ghostsVsGhost(int i, Ghost* g[]);
 	// Functions to handle the ghosts and fruit moves
@@ -68,6 +67,7 @@ protected:
 	virtual void handlePacmanMove(Pacman& p, char& key, int& dir, Point& next);
 
 	void createNewfileNames(const string& name, string& stepsFileName, string& resultFileName);
+	void checkBoardExist();
 public:
 	virtual void start();
 };

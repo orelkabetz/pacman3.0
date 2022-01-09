@@ -150,15 +150,18 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pacman.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="InputParser.cpp" />
     <ClCompile Include="ThePacmanGame.cpp" />
     <ClCompile Include="ThePacmanGameLoad.cpp" />
     <ClCompile Include="ThePacmanGameSave.cpp" />
     <ClCompile Include="ThePacmanGameSilent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoardNotSupportedExeption.h" />
     <ClInclude Include="Creature.h" />
     <ClInclude Include="Enum.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="InvalidGameModeException.h" />
     <ClInclude Include="Fruit.h" />
     <ClInclude Include="Ghost.h" />
     <ClInclude Include="Board.h" />
@@ -167,6 +170,7 @@
     <ClInclude Include="GhostNovice.h" />
     <ClInclude Include="InputParser.h" />
     <ClInclude Include="io_utils.h" />
+    <ClInclude Include="NoBoardsException.h" />
     <ClInclude Include="Pacman.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="ThePacmanGame.h" />

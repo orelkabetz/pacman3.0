@@ -1,7 +1,7 @@
 #include "io_utils.h"
+#include "InvalidGameModeException.h"
 
 class InputParser {
-private:
 public:
     int mode = NULL;
     vector <string> tokens;
@@ -10,23 +10,8 @@ public:
             this->tokens.push_back(string(argv[i]));
     }
 
-    void checkMode()
-    {
-        if (cmdOptionExists("-save")) // maybe to add if it finds both silent+save+load
-            mode = Mode::SAVE;
-        else if (cmdOptionExists("-load"))
-        {
-            if (cmdOptionExists("[-silent]"))
-                mode = Mode::SILENT;
-            else
-                mode = Mode::LOAD;
-        }
-        else
-        {
-            cout << "No valid Mode enterd!";
-            return; //add exceptions
-        }
-    }
+    void checkMode();
+   
  
     bool cmdOptionExists(const string& option) const {
         return find(this->tokens.begin(), this->tokens.end(), option)

@@ -13,16 +13,6 @@
 #include <queue>
 #include <cmath>
 
-#define START '1'
-#define STARTWOC '2'
-#define INSTRUCTIONS '8'
-#define EXIT '9'
-
-#define WALL '#'
-#define BREAD '.'
-#define SPACE '%'
-
-
 void gotoxy(int x, int y);
 void setTextColor(Color);
 void hideCursor();

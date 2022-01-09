@@ -37,6 +37,7 @@ enum Level{
 };
 
 enum Screens{
+	NONE = 0,
 	MULTIPLE = 1,
 	SINGLE = 2
 };
@@ -46,6 +47,22 @@ enum Mode{
 	LOAD = 2,
 	SILENT =3
 };
+
+enum Choice{
+	START = '1',
+	STARTWOC = '2',
+	INSTRUCTIONS = '8',
+	EXIT = '9'
+};
+
+enum Print {
+	WALL = '#',
+	BREAD = '.',
+	SPACE = '%',
+	GHOST = '$'
+};
+
+
 
 //enum Walls {|, +, -, #};
 

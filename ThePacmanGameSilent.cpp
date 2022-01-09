@@ -2,29 +2,35 @@
 #include "ThePacmanGameSilent.h"
 #include "io_utils.h"
 
-void ThePacmanGameSilent::start() //changed
+void ThePacmanGameSilent::start() 
 {
-	do {
-		Board::colored = true;
-		runByScreens();
-	} while (wannaPlay);
+	Board::colored = true;
+	runByScreens();
+	clear_screen();
+	if (finalTest)
+	{
+		setTextColor(Color::GREEN);
+		cout << "The final Test has passed successfully";
+	}
+	else
+	{
+		setTextColor(Color::RED);
+		cout << "The final Test has not passed successfully";
+	}
+	setTextColor(Color::WHITE);
 }
 
-void ThePacmanGameSilent::init() //changed
+void ThePacmanGameSilent::init() 
 {
 	lives = 3;
 	score = 0;
 	b.createFileList(Board::fileNamesList);
-	if (!Board::fileNamesList.size())
-		printNoBoards(); // exception
+	
 	return;
 }
 
 void ThePacmanGameSilent::run(string name)
 {
-	//clear_screen();
-	//cout << "this is Save Mode";
-	//Sleep(400);
 	clear_screen();
 	hideCursor();
 	string stepsFileName, resultFileName;
@@ -37,7 +43,7 @@ void ThePacmanGameSilent::run(string name)
 	char isActive = 0;
 	char tmp;
 	int dir = 0, x, y;
-	int timeInGame = 1, timeInFile;
+	int timeInGame = 1, timeInFile, timeInResultFile;
 	bool wait = true, isCrumb = false, stop = false, test = true;
 
 	GhostNovice gn0(UP, Board::GhostsPos[0]), gn1(DOWN, Board::GhostsPos[1]), gn2(UP, Board::GhostsPos[2]), gn3(DOWN, Board::GhostsPos[3]);
@@ -48,21 +54,10 @@ void ThePacmanGameSilent::run(string name)
 	Fruit f(Point(22, 13));
 	Point next;
 
-	// Print board, score and lives
-	//remainedCrumbs = b.print() - 1;
-	//remainedCrumbs = 100;
-
-	//gotoxy(41, 24);
-	//printScore();
-	//printLives();
-
 	if (Board::colored) { setColors(p, g, f); }
 	while (!stepsFile.eof())
 	{
 		stepsFile >> timeInFile;
-		gotoxy(60, 1);
-		//cout << timeInGame; //possible to delete only for debug
-
 		stepsFile >> key;
 		handlePacmanMove(p, key, dir, next);
 
@@ -71,8 +66,6 @@ void ThePacmanGameSilent::run(string name)
 
 		if (f.getVisible())
 		{
-			//stepsFile >> tmp;
-			//f.setFigure(tmp);
 			f.setFigure('0');
 
 			stepsFile >> x;
@@ -85,14 +78,12 @@ void ThePacmanGameSilent::run(string name)
 		for (int i = 0; i < Board::ghostCount; i++)
 		{
 			stepsFile >> key;
-			//directionToKey(key);
 			dir = charToDirection(key);
 			g[i]->setDirection(dir);
 		}
 		ghostsMove(wait, stop, isCrumb, g, p);
 
 		stepsFile >> key;
-		//directionToKey(key);
 		dir = charToDirection(key);
 		f.setDirection(dir);
 		if (f.getVisible())
@@ -106,7 +97,6 @@ void ThePacmanGameSilent::run(string name)
 		pacmanVsGhosts(p, g, name);
 		if (pacmanDied)
 		{
-			//resultFile << "Pacman has died in iteration: " << timeInGame << endl;
 			resultFile >> timeInFile;
 			if (timeInFile != timeInGame)
 				test = false;
@@ -116,7 +106,6 @@ void ThePacmanGameSilent::run(string name)
 			p.setDirection(STAY);
 			for (int i = 0; i < Board::ghostCount; i++)
 			{
-				//g[i]->erase(isCrumb);
 				g[i]->setPos(Board::GhostsPos[i]);
 				if (i % 2 == 0)
 					g[i]->setDirection(UP);
@@ -124,15 +113,12 @@ void ThePacmanGameSilent::run(string name)
 					g[i]->setDirection(DOWN);
 			}
 		}
-		//Sleep(200);
 		timeInGame++;
-		//stepsFile >> tmp;
 	}
-	if (remainedCrumbs == 0)
+	if (remainedCrumbs <= 0)
 	{
-		//resultFile << "Pacman has finished the screen in iteration: " << timeInGame - 1 << endl;
 		resultFile >> timeInFile;
-		if (timeInFile != (timeInGame - 1))
+		if (timeInFile != (timeInGame-2))
 			test = false;
 	}
 
@@ -142,15 +128,16 @@ void ThePacmanGameSilent::run(string name)
 	if (test)
 	{
 		setTextColor(Color::GREEN);
-		cout << "The Test has passed successfully";
+		cout << "The Test of " << name << " has passed successfully";
 	}
 	else
 	{
 		setTextColor(Color::RED);
-		cout << "The Test has not passed successfully";
+		cout << "The Test of " << name << " has not passed successfully";
 	}
-	//Sleep(2000);
-	exit(0);
+	Sleep(1500);
+	if (!test)
+		finalTest = false;
 }
 
 int ThePacmanGameSilent::charToDirection(const char& tmp)
@@ -168,7 +155,7 @@ int ThePacmanGameSilent::charToDirection(const char& tmp)
 	case 'S':
 		return STAY;
 	default:
-		return NULL; //exception?
+		return NULL; 
 	}
 }
 
@@ -185,8 +172,8 @@ void ThePacmanGameSilent::runByScreens()
 	init();
 	for (int i = 0; i < Board::fileNamesList.size(); i++)
 	{
-		//printLevel(i);
-		remainedCrumbs = b.readScreens(Board::fileNamesList[i]);
+		remainedCrumbs = b.readScreens(Board::fileNamesList[i]) -1;
+		//remainedCrumbs = 40;
 		if (!isBoardValid())
 		{
 			wannaPlay = false;
@@ -203,7 +190,6 @@ void ThePacmanGameSilent::runByScreens()
 	return;
 }
 
-
 void ThePacmanGameSilent::pacmanVsGhosts(Pacman& p, Ghost* g[], string name)
 {
 	for (int i = 0; i < 4; i++)
@@ -212,11 +198,6 @@ void ThePacmanGameSilent::pacmanVsGhosts(Pacman& p, Ghost* g[], string name)
 		{
 			pacmanDied = true;
 			ThePacmanGame::lives--;
-			//if (lives)
-			//	p.loseLife(Board::colored);
-
-			Sleep(200);
-			//run(name); // öøéê ìùðåú ìreturn
 			return;
 		}
 	}
@@ -230,7 +211,10 @@ void ThePacmanGameSilent::ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghos
 		for (int i = 0; i < Board::ghostCount; i++)
 		{
 			isCrumb = (isBreadCrumb(g[i]->getPos()));
-			//g[i]->simpleMove(isCrumb, p.getPos(), b);
+			next = nextPos(g[i]->getPos(), g[i]->getDirection());
+			if (b.mati[next.getY()][next.getX()] == '#')
+				return;
+
 			g[i]->step();
 			ghostsVsGhost(i, g);
 		}
@@ -238,25 +222,6 @@ void ThePacmanGameSilent::ghostsMove(bool& wait, bool& stop, bool& isCrumb, Ghos
 	}
 	else
 		wait = false;
-}
-
-void ThePacmanGameSilent::fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit& f, Pacman& p)
-{
-	//Point next;
-
-	//if ((!wait) && (!stop))
-	//{
-	//	isCrumb = (isBreadCrumb(f.getPos()));
-	//	next = nextPos(f.getPos(), f.getDirection());
-
-	//	if (b.getPoint(next) == '#')
-	//	{
-	//		//f.erase(isCrumb);
-	//		return;
-	//	}
-	//	//isCrumb = (isBreadCrumb(f.getPos()));
-	//	f.move(isCrumb);
-	//}
 }
 
 void ThePacmanGameSilent::handlePacmanMove(Pacman& p, char& key, int& dir, Point& next)
@@ -273,14 +238,13 @@ void ThePacmanGameSilent::handlePacmanMove(Pacman& p, char& key, int& dir, Point
 	else
 		p.step();
 
-	//check crumb for pacman
-	//if (b.getPoint(p.getPos()) == '.')
-	//{
-	//	b.setPoint(p.getPos(), '%');
-	//	score++;
-	//	remainedCrumbs--;
-	//	printScore();
-	//}
+	// check crumb for pacman
+	if (b.getPoint(p.getPos()) == '.')
+	{
+		b.setPoint(p.getPos(), '%');
+		score++;
+		remainedCrumbs--;
+	}
 	return;
 }
 
@@ -307,3 +271,32 @@ void ThePacmanGameSilent::directionToKey(char& key)
 		break;
 	}
 }
+
+void ThePacmanGameSilent::fruitsMove(bool& wait, bool& stop, bool& isCrumb, Fruit& f, Pacman& p)
+{
+	Point next;
+
+	if ((!wait) && (!stop))
+	{
+		isCrumb = (isBreadCrumb(f.getPos()));
+		next = nextPos(f.getPos(), f.getDirection());
+
+		if (b.getPoint(next) == '#')
+		{
+			f.erase(isCrumb);
+			return;
+		}
+		f.step();
+	}
+}
+
+void ThePacmanGameSilent::pacmanVsFruit(Pacman& p, Fruit& f)
+{
+	// Checking if pacman has the same location as the fruit
+	if (p.getPos() == f.getPos())
+	{
+		score += f.getFigure() - 48;
+		f.changeVisible();
+	}
+}
+

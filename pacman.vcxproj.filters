@@ -57,6 +57,9 @@
     <ClCompile Include="ThePacmanGameSilent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InputParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThePacmanGame.h">
@@ -108,6 +111,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThePacmanGameSilent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoardNotSupportedExeption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InvalidGameModeException.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NoBoardsException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -33,7 +33,7 @@ public:
 	// Function to make sure ghosts dont eat crumbs
 	void erase(bool isCrumb);
 
-	void step(int& dir);
+	void step();
 };
 
 #endif

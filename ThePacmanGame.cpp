@@ -12,12 +12,9 @@ void ThePacmanGame::init()
 
 	lives = 3;
 	score = 0;
-	//בחירה מסך ספציפי או כל המסכים
 	if (screens == MULTIPLE)
 	{
 		b.createFileList(Board::fileNamesList);
-		if (!Board::fileNamesList.size())
-			printNoBoards();
 	}
 	else if (screens == SINGLE)
 	{
@@ -29,6 +26,12 @@ void ThePacmanGame::init()
 		gotoxy(8, 10);
 		cin >> Board::singleScreenName;
 	}
+}
+
+void ThePacmanGame::checkBoardExist()
+{
+	if (!Board::fileNamesList.size())
+		throw NoBoardsException();
 }
 
 void ThePacmanGame::run(string name)
@@ -65,12 +68,10 @@ void ThePacmanGame::run(string name)
 
 	// Print board, score and lives
 	remainedCrumbs = b.print() - 1;
-	//remainedCrumbs = 20;
-
+	//remainedCrumbs = 40;
 
 	gotoxy(41, 24);
-	//cout << remainedCrumbs;
-	//cout << "OR & RON";
+	
 	printScore();
 	printLives();
 
@@ -91,7 +92,7 @@ void ThePacmanGame::run(string name)
 			else
 			{
 				printGoodBye();
-				exit(0);
+				return;
 			}
 		}
 
@@ -130,6 +131,7 @@ void ThePacmanGame::run(string name)
 				else
 					g[i]->setDirection(DOWN);
 			}
+			printLives();
 		}
 		Sleep(200);
 	}
@@ -192,7 +194,6 @@ void ThePacmanGame::printFrame() const
 				 "| . . . . . . . . . . . | . . . . . . . . . . . |",
 				 "+-------------------- . | . --------------------+" };
 	for (int y = 0; y < 24; y++) {
-		//gotoxy(16, y);
 		for (int x = 0; x < 50; x++) {
 			switch (menu[y][x])
 			{
@@ -253,7 +254,6 @@ void ThePacmanGame::printInstructions()
 void ThePacmanGame::printScore() const
 {
 	setTextColor(Color::WHITE);
-	//gotoxy(13, 24);
 	gotoxy(Board::info.getX(), Board::info.getY());
 	cout << "Score: " << ThePacmanGame::score;
 }
@@ -261,7 +261,6 @@ void ThePacmanGame::printScore() const
 void ThePacmanGame::printLives() const
 {
 	setTextColor(Color::WHITE);
-	//gotoxy(24, 24);
 	gotoxy(Board::info.getX() +9, Board::info.getY());
 	cout << " | Lives: " << ThePacmanGame::lives;
 }
@@ -269,29 +268,46 @@ void ThePacmanGame::printLives() const
 void ThePacmanGame::printPause() const
 {
 	setTextColor(WHITE);
-	gotoxy(51, 8);
-	cout << "Game paused,";
-	gotoxy(51, 9);
-	cout << "press any key";
-	gotoxy(51, 10);
-	cout << "to continue";
+	if (Board::info.getY() > 15)
+	{
+		gotoxy(Board::info.getX() +25, Board::maxY);
+		cout << "Game paused,";
+		gotoxy(Board::info.getX() + 25, Board::maxY + 1);
+		cout << "press any key";
+		gotoxy(Board::info.getX() + 25, Board::maxY + 2);
+		cout << "to continue";
+	}
+	else
+	{
+		gotoxy(Board::info.getX(), Board::info.getY() + 1);
+		cout << "Game paused,";
+		gotoxy(Board::info.getX(), Board::info.getY() + 2);
+		cout << "press any key";
+		gotoxy(Board::info.getX(), Board::info.getY() + 3);
+		cout << "to continue";
+	}
 }
 
 void ThePacmanGame::printContinue() const
 {
-	gotoxy(51, 8);
-	cout << "             ";
-	gotoxy(51, 9);
-	cout << "             ";
-	gotoxy(51, 10);
-	cout << "             ";
-}
-
-void ThePacmanGame::printNoBoards() const
-{
-	clear_screen();
-	cout << "Sorry, there are no game boards in the directory" << endl;
-	exit(0);
+	if (Board::maxX > 70)
+	{
+		gotoxy(10, Board::maxY + 1);
+		cout << "             ";
+		gotoxy(10, Board::maxY + 2);
+		cout << "             ";
+		gotoxy(10, Board::maxY + 3);
+		cout << "             ";
+	}
+	else
+	{
+		gotoxy(Board::info.getX(), Board::info.getY() + 1);
+		cout << "             ";
+		gotoxy(Board::info.getX(), Board::info.getY() + 2);
+		cout << "             ";
+		gotoxy(Board::info.getX(), Board::info.getY() + 3);
+		cout << "             ";
+	}
 }
 
 void ThePacmanGame::printLevel(int i) const
@@ -381,7 +397,6 @@ void ThePacmanGame::printScreenChoice()
 void ThePacmanGame::checkChoice()
 {
 	char choose;
-//	bool wannaPlay = true;
 	do 
 	{
 		choose = _getch();
@@ -389,10 +404,14 @@ void ThePacmanGame::checkChoice()
 		case START: // Start the game
 			Board::colored = true;
 			runByScreens();
+			try { checkBoardExist(); }
+			catch (NoBoardsException& n) {return;};
 			break;
 		case STARTWOC:
 			Board::colored = false;
 			runByScreens();
+			try { checkBoardExist(); }
+			catch (NoBoardsException& n) { return; };
 			break;
 		case INSTRUCTIONS: // Print instructions
 			printInstructions();
@@ -413,6 +432,12 @@ void ThePacmanGame::runByScreens()
 	printGhostLevel();
 	printScreenChoice();
 	init();
+	try { checkBoardExist(); }
+	catch (NoBoardsException& n) {
+		clear_screen();
+		cout << n.what() << endl;
+		return;
+	};
 	if (screens == MULTIPLE)
 	{
 		Board::fileNamesList.front();
@@ -428,7 +453,7 @@ void ThePacmanGame::runByScreens()
 			run(Board::fileNamesList[i]);
 			if (!lives)
 				gameOver();
-			//Board::pacmanCount = 0; Board::ghostCount = 0;
+			Board::pacmanCount = 0; Board::ghostCount = 0;
 		}
 	}
 	else if (screens == SINGLE)
@@ -456,7 +481,6 @@ bool ThePacmanGame::isBoardValid()
 		gotoxy(0, 0);
 		setTextColor(WHITE);
 		cout << "The file is not valid. No pacman or too many.\n\n";
-		//Sleep(2000);
 		return false;
 	}
 	else if ((Board::ghostCount == 0) || (Board::ghostCount > 4))
@@ -465,7 +489,6 @@ bool ThePacmanGame::isBoardValid()
 		gotoxy(0, 0);
 		setTextColor(WHITE);
 		cout << "The file is not valid. No ghosts or too many.\n\n";
-		//Sleep(2000);
 		return false;
 	}
 	else return true;
@@ -493,7 +516,6 @@ void ThePacmanGame::win()
 
 void ThePacmanGame::gameOver()
 {
-	//clear_screen();
 	for (int i = 0; i < 4; i++)
 	{
 		if (Board::colored) { setTextColor(Color::RED); }
@@ -511,7 +533,6 @@ void ThePacmanGame::gameOver()
 	gotoxy(1, 24);
 	clear_screen();
 	
-	//lives = 3;
 	printMenu();
 	checkChoice();
 }
@@ -571,7 +592,6 @@ void ThePacmanGame::pacmanVsGhosts(Pacman& p, Ghost* g[],string name)
 				p.loseLife(Board::colored);
 
 			Sleep(200);
-			//run(name); // öøéê ìùðåú ìreturn
 			return;
 		}
 	}
@@ -582,7 +602,7 @@ void ThePacmanGame::pacmanVsFruit(Pacman& p, Fruit& f)
 	// Checking if pacman has the same location as the fruit
 	if (p.getPos()==f.getPos())
 	{
-		score += f.getFigure()-48;
+		score += f.getFigure()-'0';
 		printMotivation();
 		f.changeVisible();
 	}
@@ -703,8 +723,6 @@ void ThePacmanGame::handleFruitActivity(Fruit& f)
 				pos = f.randPosition();
 			f.randValue();
 			f.setPosition(pos);
-	
-			//f.setDirection(STAY);
 		}
 	}
 }
