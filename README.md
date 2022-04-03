@@ -3,9 +3,9 @@ Wrriten by: Or Elkabetz, Ron zilberberg.
 
 Table of Contents:
 Header files:
-	Board.h
-	BoardNotSupportedExeption.h
-	config.h
+\n	Board.h
+\n	BoardNotSupportedExeption.h
+\n	config.h
 	Creture.h
 	Enum.h
 	Fruit.h
