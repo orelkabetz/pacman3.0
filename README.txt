@@ -1,9 +1,5 @@
-PACMAN
-Ex 3/3	09/01/22
-
-Submitted by:
-	Or Elkabetz - 312198179
-	Ron zilberberg - 315999276
+#PACMAN
+Wrriten by: Or Elkabetz, Ron zilberberg.
 
 Table of Contents:
 Header files:
@@ -43,13 +39,5 @@ Source File:
 	ThePacmanGameLoad.cpp
 	ThePacmanGameSave.cpp
 	ThePacmanGameSilent.cpp
-
-Features:
-1. We have added a feature of colors, you can choose wethear to play with or without colors in the main menu.
-2. Original looking pacman graphics.
-3. Cool menu.
-4. Cool Messages appear when eating a fruit.
-5. Exceptions.
-6. There is a test to each file and a final test that collect them all.
-
-Thank you, Or and Ron.
+	
+	
